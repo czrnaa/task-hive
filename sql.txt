@@ -24,3 +24,21 @@ CREATE TABLE IF NOT EXISTS jobs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- FILE LAYOUT
+task-hive
+|_ assests
+   |_ css
+      style.css
+   |_ uploads
+|_ database
+   |_ config.php
+|_ includes
+   |_ session.php
+|_ browse_job.php
+|_ account.php
+|_ index.php
+|_ login.php
+|_ logout.php
+|_ post_job.php
+|_ register.php
