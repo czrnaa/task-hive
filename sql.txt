@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    token VARCHAR(255) DEFAULT NULL,
-    is_verified TINYINT(1) DEFAULT 0, 
+    token VARCHAR(255) DEFAULT NULL, -- for token column for email verification
+    is_verified TINYINT(1) DEFAULT 0,   -- for is_verified flag to track email verification
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,7 +38,7 @@ task-hive
    |_ config.php
 |_ includes
    |_ session.php
-├├── PHPMailer // new folder
+├├── PHPMailer // new folder for sending verification emails
 │   ├── DSNConfigurator.php
 │   ├── Exception.php
 │   ├── OAuth.php
@@ -54,5 +54,5 @@ task-hive
 |_ logout.php
 |_ post_job.php
 |_ register.php
-|_ verify.php // new file
+|_ verify.php // new file for handles token verification via email link
 
