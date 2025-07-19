@@ -24,3 +24,5 @@ task-hive
 |_ post_job.php
 |_ register.php
 |_ verify.php // new file for handles token verification via email link
+|_ forgot_password.php //new file for reset pass email
+|_ reset_password.php //new file for reset pass
