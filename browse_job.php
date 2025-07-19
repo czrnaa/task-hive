@@ -1,48 +1,50 @@
 <?php
+// Include shared files
 include("includes/session.php");
 include("database/config.php");
 
+// Only logged-in users can see this page
 ensureLoggedIn();
 
 // INITIALIZE FILTER AND SORT VARIABLES
 // Get values from the URL (GET request), using null coalescing operator for defaults
-$search_title = $_GET['search_title'] ?? '';
-$search_work_setup = $_GET['work_setup'] ?? '';
-$sort_order = $_GET['sort_order'] ?? 'newest';
+$searchTitle = $_GET['search_title'] ?? '';
+$searchWorkSetup = $_GET['work_setup'] ?? '';
+$sortOrder = $_GET['sort_order'] ?? 'newest';
 
 
 // BUILD THE DYNAMIC SQL QUERY
 // Base query: Select all job details and join with users table to get the poster's name
-$sql = "SELECT jobs.*, users.name as poster_name 
+$sql = "SELECT jobs.*, users.name as posterName 
         FROM jobs 
         JOIN users ON jobs.user_id = users.id";
 
 // An array to hold our WHERE conditions
-$where_clauses = [];
+$whereClauses = [];
 $params = [];
 $types = '';
 
 // Filter by Title/Keyword (Category proxy)
-if (!empty($search_title)) {
-    $where_clauses[] = "jobs.title LIKE ?";
-    $params[] = "%" . $search_title . "%";
+if (!empty($searchTitle)) {
+    $whereClauses[] = "jobs.title LIKE ?";
+    $params[] = "%" . $searchTitle . "%";
     $types .= 's';
 }
 
 // Filter by Work Setup (Location proxy)
-if (!empty($search_work_setup)) {
-    $where_clauses[] = "jobs.work_setup = ?";
-    $params[] = $search_work_setup;
+if (!empty($searchWorkSetup)) {
+    $whereClauses[] = "jobs.work_setup = ?";
+    $params[] = $searchWorkSetup;
     $types .= 's';
 }
 
 // If there are any WHERE conditions, append them to the SQL query
-if (!empty($where_clauses)) {
-    $sql .= " WHERE " . implode(" AND ", $where_clauses);
+if (!empty($whereClauses)) {
+    $sql .= " WHERE " . implode(" AND ", $whereClauses);
 }
 
 // Add Sorting logic (Budget/Deadline)
-switch ($sort_order) {
+switch ($sortOrder) {
     case 'deadline_asc':
         $sql .= " ORDER BY jobs.deadline ASC, jobs.created_at DESC";
         break;
@@ -93,24 +95,24 @@ $result = $stmt->get_result();
         <form action="browse_job.php" method="GET" class="filter-form">
             <div>
                 <label for="search_title">Category / Keyword</label>
-                <input type="text" name="search_title" id="search_title" placeholder="e.g., 'Web Developer'" value="<?php echo htmlspecialchars($search_title); ?>">
+                <input type="text" name="search_title" id="search_title" placeholder="e.g., 'Web Developer'" value="<?php echo htmlspecialchars($searchTitle); ?>">
             </div>
             
             <div>
                 <label for="work_setup">Work Setup (Location)</label>
                 <select name="work_setup" id="work_setup">
                     <option value="">All</option>
-                    <option value="Remote" <?php if ($search_work_setup == 'Remote') echo 'selected'; ?>>Remote</option>
-                    <option value="On-site" <?php if ($search_work_setup == 'On-site') echo 'selected'; ?>>On-site</option>
-                    <option value="Hybrid" <?php if ($search_work_setup == 'Hybrid') echo 'selected'; ?>>Hybrid</option>
+                    <option value="Remote" <?php if ($searchWorkSetup == 'Remote') echo 'selected'; ?>>Remote</option>
+                    <option value="On-site" <?php if ($searchWorkSetup == 'On-site') echo 'selected'; ?>>On-site</option>
+                    <option value="Hybrid" <?php if ($searchWorkSetup == 'Hybrid') echo 'selected'; ?>>Hybrid</option>
                 </select>
             </div>
 
             <div>
                 <label for="sort_order">Sort By</label>
                 <select name="sort_order" id="sort_order">
-                    <option value="newest" <?php if ($sort_order == 'newest') echo 'selected'; ?>>Newest First</option>
-                    <option value="deadline_asc" <?php if ($sort_order == 'deadline_asc') echo 'selected'; ?>>Deadline (Soonest First)</option>
+                    <option value="newest" <?php if ($sortOrder == 'newest') echo 'selected'; ?>>Newest First</option>
+                    <option value="deadline_asc" <?php if ($sortOrder == 'deadline_asc') echo 'selected'; ?>>Deadline (Soonest First)</option>
                 </select>
             </div>
 
@@ -130,7 +132,7 @@ $result = $stmt->get_result();
                         <p><?php echo nl2br(htmlspecialchars($job['description'])); ?></p>
                         
                         <div class="job-details">
-                            <div><strong>Posted by:</strong> <?php echo htmlspecialchars($job['poster_name']); ?></div>
+                            <div><strong>Posted by:</strong> <?php echo htmlspecialchars($job['posterName']); ?></div>
                             <div><strong>Payment:</strong> <?php echo htmlspecialchars($job['payment_mode']); ?></div>
                             <div><strong>Setup:</strong> <?php echo htmlspecialchars($job['work_setup']); ?></div>
                             <?php if(!empty($job['deadline'])): ?>
