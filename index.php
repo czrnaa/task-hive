@@ -19,7 +19,7 @@ include("includes/session.php");
                 <ul>
                     <li><a href="account.php">Manage Account</a></li>
                     <li><a href="post_job.php">Post a Job</a></li>
-                    <li><a href="browse_jobs.php">Browse Jobs</a></li>
+                    <li><a href="browse_job.php">Browse Jobs</a></li> <!-- changed from browse_jobs.php-->
                     <li><a href="logout.php">Logout</a></li>
                 </ul>
             </nav>
