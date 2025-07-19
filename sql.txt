@@ -38,7 +38,7 @@ task-hive
    |_ config.php
 |_ includes
    |_ session.php
-├├── PHPMailer
+├├── PHPMailer // new folder
 │   ├── DSNConfigurator.php
 │   ├── Exception.php
 │   ├── OAuth.php
@@ -54,5 +54,5 @@ task-hive
 |_ logout.php
 |_ post_job.php
 |_ register.php
-|_ verify.php
+|_ verify.php // new file
 
