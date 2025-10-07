@@ -1,2 +1,2 @@
 # task-hive
-php final project
+PHP Final Project
